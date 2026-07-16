@@ -1,7 +1,7 @@
 {
   "name": "wedding-cms",
   "version": "1.0.0",
-  "description": "Lightweight Node.js + Express backend for a wedding website content management (images + text).",
+  "description": "Lightweight wedding CMS with Vercel serverless backend.",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "express": "^4.19.2",
-    "multer": "^2.0.0"
-  }
+    "multer": "^2.0.0",
+    "formidable": "^2.4.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {}
 }

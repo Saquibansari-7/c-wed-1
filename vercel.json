@@ -1,0 +1,7 @@
+{
+  "buildCommand": "npm install",
+  "env": {
+    "ADMIN_USER": "@ADMIN_USER",
+    "ADMIN_PASS": "@ADMIN_PASS"
+  }
+}
