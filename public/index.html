@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Olivia & Ben — Wedding</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Cormorant Garamond"', 'serif'],
+            display: ['"Playfair Display"', 'serif'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            cream: '#f5f1ea',
+            sand: '#e8e0d3',
+            ink: '#2b2b2b',
+            muted: '#6b655c',
+            accent: '#8a7a5c',
+          }
+        }
+      }
+    }
+  </script>
+  <script src="data.js"></script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f1ea;
+      color: #2b2b2b;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .serif {
+      font-family: 'Cormorant Garamond', serif;
+    }
+
+    .display {
+      font-family: 'Playfair Display', serif;
+    }
+
+    .italic-display {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+    }
+
+    /* Fade-in on scroll */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Hero image ken-burns */
+    @keyframes kenburns {
+      0% {
+        transform: scale(1.05);
+      }
+
+      100% {
+        transform: scale(1.15);
+      }
+    }
+
+    .kenburns {
+      animation: kenburns 18s ease-in-out infinite alternate;
+    }
+
+    /* Divider ornament */
+    .ornament::before,
+    .ornament::after {
+      content: "";
+      display: inline-block;
+      width: 40px;
+      height: 1px;
+      background: #b8ad97;
+      vertical-align: middle;
+      margin: 0 14px;
+    }
+
+    .countdown-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+    }
+
+
+
+    .btn-outline {
+      border: 1px solid #2b2b2b;
+      padding: 14px 40px;
+      letter-spacing: 0.25em;
+      font-size: 11px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline:hover {
+      background: #2b2b2b;
+      color: #f5f1ea;
+    }
+
+    .btn-light {
+      border: 1px solid #fff;
+      color: #fff;
+      padding: 14px 40px;
+      letter-spacing: 0.25em;
+      font-size: 11px;
+      text-transform: uppercase;
+      transition: all 0.3s ease;
+    }
+
+    .btn-light:hover {
+      background: #fff;
+      color: #2b2b2b;
+    }
+
+    .section-label {
+      letter-spacing: 0.35em;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #8a7a5c;
+    }
+
+    /* ===== Opening Animation ===== */
+    #opening-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      transition: opacity 1.4s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    #opening-overlay.dismissed {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Dust */
+    .dust-field {
+      position: absolute;
+      inset: -20px;
+      z-index: 2;
+      pointer-events: none;
+      transition: transform 0.8s cubic-bezier(0.25, 0, 0.2, 1);
+    }
+
+    .dust {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      will-change: transform, opacity;
+      opacity: 0;
+      animation: dustDrift var(--dur) var(--del) linear infinite;
+    }
+
+    @keyframes dustDrift {
+      0% {
+        transform: translate(0, 0) scale(0.5);
+        opacity: 0;
+      }
+
+      6% {
+        opacity: 1;
+        transform: translate(calc(var(--dx)*0.06), calc(var(--dy)*0.06)) scale(1);
+      }
+
+      88% {
+        opacity: 1;
+      }
+
+      100% {
+        transform: translate(var(--dx), var(--dy)) scale(0.3);
+        opacity: 0;
+      }
+    }
+
+    /* Seal */
+    .seal-wrap {
+      position: relative;
+      z-index: 20;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
+
+    .seal-wrap:focus-visible {
+      outline: 2px solid rgba(212, 195, 155, 0.5);
+      outline-offset: 12px;
+      border-radius: 50%;
+    }
+
+    .seal-svg {
+      width: clamp(105px, 24vw, 145px);
+      height: clamp(105px, 24vw, 145px);
+      animation: sealBreath 3.2s ease-in-out infinite;
+      filter: drop-shadow(0 0 35px rgba(139, 58, 58, 0.2)) drop-shadow(0 6px 24px rgba(0, 0, 0, 0.45));
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .seal-wrap:hover .seal-svg {
+      filter: drop-shadow(0 0 50px rgba(139, 58, 58, 0.35)) drop-shadow(0 6px 30px rgba(0, 0, 0, 0.55));
+      transform: scale(1.06);
+      animation-play-state: paused;
+    }
+
+    @keyframes sealBreath {
+
+      0%,
+      100% {
+        transform: scale(1);
+      }
+
+      50% {
+        transform: scale(1.045);
+      }
+    }
+
+    .seal-svg.dissolving {
+      animation: sealDissolve 1s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+      pointer-events: none;
+    }
+
+    @keyframes sealDissolve {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: drop-shadow(0 0 35px rgba(139, 58, 58, 0.2)) drop-shadow(0 6px 24px rgba(0, 0, 0, 0.45)) blur(0px);
+      }
+
+      35% {
+        opacity: 0.85;
+        transform: scale(1.18);
+        filter: drop-shadow(0 0 55px rgba(212, 195, 155, 0.5)) drop-shadow(0 6px 30px rgba(0, 0, 0, 0.3)) blur(1px);
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(1.7);
+        filter: drop-shadow(0 0 80px rgba(212, 195, 155, 0)) drop-shadow(0 6px 30px rgba(0, 0, 0, 0)) blur(16px);
+      }
+    }
+
+    .tap-hint {
+      margin-top: 30px;
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: rgba(212, 195, 155, 0.4);
+      animation: hintPulse 2.8s ease-in-out infinite;
+      user-select: none;
+      transition: opacity 0.3s ease;
+    }
+
+    @keyframes hintPulse {
+
+      0%,
+      100% {
+        opacity: 0.3;
+      }
+
+      50% {
+        opacity: 0.7;
+      }
+    }
+
+    .tap-hint.fade-out {
+      opacity: 0 !important;
+      animation: none;
+    }
+
+    /* Flash */
+    .flash-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 15;
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(255, 242, 215, 0.55) 0%, rgba(212, 195, 155, 0.15) 35%, transparent 65%);
+      opacity: 0;
+    }
+
+    .flash-layer.active {
+      animation: flashBurst 1s ease-out forwards;
+    }
+
+    @keyframes flashBurst {
+      0% {
+        opacity: 0;
+      }
+
+      12% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+      }
+    }
+
+    /* Curtains */
+    .curtain {
+      position: absolute;
+      top: 0;
+      width: 50.5%;
+      height: 100%;
+      z-index: 8;
+      background: linear-gradient(180deg, #f5f1ea 0%, #f2ede5 20%, #ede7dc 45%, #f0ebe2 65%, #e8e0d3 100%);
+      box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.025);
+    }
+
+    .curtain-left {
+      left: 0;
+      transform-origin: left center;
+    }
+
+    .curtain-right {
+      right: 0;
+      transform-origin: right center;
+    }
+
+    .curtain-left::before,
+    .curtain-right::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0, 0, 0, 0.007) 3px, rgba(0, 0, 0, 0.007) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 5px, rgba(0, 0, 0, 0.004) 5px, rgba(0, 0, 0, 0.004) 6px);
+      pointer-events: none;
+    }
+
+    .curtain-left::after {
+      content: '';
+      position: absolute;
+      top: 6%;
+      right: 0;
+      width: 1.5px;
+      height: 88%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(138, 122, 92, 0.15) 8%, rgba(138, 122, 92, 0.5) 25%, rgba(168, 148, 108, 0.6) 50%, rgba(138, 122, 92, 0.5) 75%, rgba(138, 122, 92, 0.15) 92%, transparent 100%);
+      z-index: 1;
+    }
+
+    .curtain-right::before {
+      content: '';
+      position: absolute;
+      top: 6%;
+      left: 0;
+      width: 1.5px;
+      height: 88%;
+      background: linear-gradient(to bottom, transparent 0%, rgba(138, 122, 92, 0.15) 8%, rgba(138, 122, 92, 0.5) 25%, rgba(168, 148, 108, 0.6) 50%, rgba(138, 122, 92, 0.5) 75%, rgba(138, 122, 92, 0.15) 92%, transparent 100%);
+      z-index: 1;
+    }
+
+    .curtain-edge-dots {
+      position: absolute;
+      top: 10%;
+      width: 8px;
+      height: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .curtain-left .curtain-edge-dots {
+      right: -4px;
+    }
+
+    .curtain-right .curtain-edge-dots {
+      left: -4px;
+    }
+
+    .curtain-edge-dots span {
+      width: 3px;
+      height: 3px;
+      border-radius: 50%;
+      background: rgba(138, 122, 92, 0.35);
+    }
+
+    .curtain-left.opening {
+      animation: curtainSlideL 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .curtain-right.opening {
+      animation: curtainSlideR 2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes curtainSlideL {
+      to {
+        transform: translateX(-103%);
+      }
+    }
+
+    @keyframes curtainSlideR {
+      to {
+        transform: translateX(103%);
+      }
+    }
+
+    /* Warm glow */
+    .warm-glow {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      pointer-events: none;
+      background: radial-gradient(ellipse at 50% 48%, rgba(180, 160, 120, 0.22) 0%, rgba(138, 122, 92, 0.08) 45%, transparent 72%);
+      opacity: 0;
+    }
+
+    .warm-glow.active {
+      animation: glowIn 2.2s ease forwards;
+    }
+
+    @keyframes glowIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    /* Names */
+    .opening-names {
+      position: absolute;
+      inset: 0;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      padding: 0 20px;
+    }
+
+    .name-line {
+      opacity: 0;
+      transform: translateY(20px);
+      color: #f5f1ea;
+      text-shadow: 0 0 40px rgba(212, 195, 155, 0.3);
+    }
+
+    .name-line.revealed {
+      animation: nameReveal 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    @keyframes nameReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #nl-0 {
+      font-family: 'Inter', sans-serif;
+      font-size: 10px;
+      letter-spacing: 0.45em;
+      text-transform: uppercase;
+      opacity: 0.65;
+      margin-bottom: 20px;
+    }
+
+    #nl-1,
+    #nl-3 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(38px, 10vw, 88px);
+      font-weight: 400;
+      line-height: 1.05;
+    }
+
+    #nl-2 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(22px, 5vw, 42px);
+      margin: 2px 0;
+    }
+
+    .name-divider {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(212, 195, 155, 0.5), transparent);
+      margin: 22px 0;
+      transition: width 1s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .name-divider.revealed {
+      width: 70px;
+    }
+
+    #nl-5 {
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.55;
+    }
+
+    .date-ornament {
+      display: inline-block;
+      width: 4px;
+      height: 4px;
+      background: rgba(212, 195, 155, 0.4);
+      transform: rotate(45deg);
+      margin: 0 14px;
+      vertical-align: middle;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .seal-svg,
+      .tap-hint,
+      .dust {
+        animation: none !important;
+      }
+
+      .seal-svg.dissolving {
+        animation: sealFast 0.3s ease forwards !important;
+      }
+
+      @keyframes sealFast {
+        to {
+          opacity: 0;
+          transform: scale(1.3);
+        }
+      }
+
+      .curtain-left.opening,
+      .curtain-right.opening {
+        animation-duration: 0.5s !important;
+      }
+    }
+
+    /* ===== Mobile tuning ===== */
+    /* Use the small-viewport unit so the hero fills the visible area
+       (no white gap from the mobile browser address bar) and content
+       is never clipped by overflow:hidden. */
+    #home {
+      height: 100vh;
+      height: 100svh;
+    }
+
+    @media (max-width: 768px) {
+      /* Opening seal: bigger tap target + clearer hint on phones */
+      .seal-svg {
+        width: clamp(118px, 34vw, 160px);
+        height: clamp(118px, 34vw, 160px);
+      }
+
+      .tap-hint {
+        margin-top: 22px;
+        font-size: 11px;
+        letter-spacing: 0.35em;
+      }
+
+      /* Keep revealed names comfortably sized on small screens */
+      #nl-1,
+      #nl-3 {
+        font-size: clamp(34px, 12vw, 72px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- OPENING ANIMATION OVERLAY -->
+  <div id="opening-overlay">
+
+    <!-- Warm glow behind curtains -->
+    <div class="warm-glow" id="warm-glow"></div>
+
+    <!-- Dust particles (JS populated) -->
+    <div class="dust-field" id="dust-field"></div>
+
+    <!-- Left curtain -->
+    <div class="curtain curtain-left" id="curtain-left">
+      <div class="curtain-edge-dots">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Right curtain -->
+    <div class="curtain curtain-right" id="curtain-right">
+      <div class="curtain-edge-dots">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span>
+      </div>
+    </div>
+
+    <!-- Flash layer -->
+    <div class="flash-layer" id="flash-layer"></div>
+
+    <!-- Revealed names (behind seal / between curtains) -->
+    <div class="opening-names" id="opening-names">
+      <p class="name-line" id="nl-0">The Wedding Of</p>
+      <h1 class="name-line" id="nl-1">Olivia</h1>
+      <p class="name-line italic-display" id="nl-2">&amp;</p>
+      <h1 class="name-line" id="nl-3">Ben</h1>
+      <div class="name-divider" id="nl-4"></div>
+      <p class="name-line" id="nl-5"><span id="ov-date">September 14, 2025</span><span
+          class="date-ornament"></span><span id="ov-loc">Tuscany</span></p>
+    </div>
+
+    <!-- Wax Seal -->
+    <div class="seal-wrap" id="seal-wrap" role="button" tabindex="0" aria-label="Tap to open wedding invitation">
+      <svg class="seal-svg" id="seal-svg" viewBox="0 0 140 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <radialGradient id="sg" cx="38%" cy="30%" r="62%">
+            <stop offset="0%" stop-color="#c4655a" />
+            <stop offset="40%" stop-color="#8B3A3A" />
+            <stop offset="100%" stop-color="#3e1515" />
+          </radialGradient>
+          <radialGradient id="sg-shine" cx="30%" cy="25%" r="35%">
+            <stop offset="0%" stop-color="rgba(255,220,180,0.18)" />
+            <stop offset="100%" stop-color="transparent" />
+          </radialGradient>
+          <filter id="wt" x="-10%" y="-10%" width="120%" height="120%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" seed="3" result="n" />
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="4" xChannelSelector="R" yChannelSelector="G" />
+          </filter>
+          <filter id="tglow">
+            <feGaussianBlur stdDeviation="1.2" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+        <circle cx="70" cy="6" r="5" fill="#7a2e2e" opacity="0.5" />
+        <circle cx="128" cy="42" r="4" fill="#8B3A3A" opacity="0.45" />
+        <circle cx="134" cy="72" r="3.5" fill="#7a2e2e" opacity="0.35" />
+        <circle cx="115" cy="125" r="4.5" fill="#8B3A3A" opacity="0.4" />
+        <circle cx="22" cy="128" r="3.5" fill="#7a2e2e" opacity="0.45" />
+        <circle cx="6" cy="85" r="4" fill="#8B3A3A" opacity="0.35" />
+        <circle cx="10" cy="48" r="3" fill="#7a2e2e" opacity="0.4" />
+        <circle cx="45" cy="134" r="3" fill="#8B3A3A" opacity="0.3" />
+        <circle cx="70" cy="70" r="60" fill="url(#sg)" filter="url(#wt)" />
+        <circle cx="70" cy="70" r="60" fill="url(#sg-shine)" />
+        <circle cx="70" cy="70" r="60" fill="none" stroke="rgba(255,225,185,0.12)" stroke-width="2" />
+        <circle cx="70" cy="70" r="48" fill="none" stroke="#c9a96e" stroke-width="0.7" opacity="0.35" />
+        <circle cx="70" cy="70" r="46" fill="none" stroke="#c9a96e" stroke-width="0.3" opacity="0.2" />
+        <circle cx="70" cy="22" r="1.8" fill="#c9a96e" opacity="0.3" />
+        <circle cx="70" cy="118" r="1.8" fill="#c9a96e" opacity="0.3" />
+        <circle cx="22" cy="70" r="1.8" fill="#c9a96e" opacity="0.3" />
+        <circle cx="118" cy="70" r="1.8" fill="#c9a96e" opacity="0.3" />
+        <text x="70" y="62" text-anchor="middle" dominant-baseline="central" font-family="'Playfair Display',serif"
+          font-size="110" font-weight="400" fill="#d4c39b" filter="url(#tglow)" opacity="0.88">🅦</text>
+      </svg>
+      <p class="tap-hint" id="tap-hint">Tap to Open</p>
+    </div>
+
+  </div>
+
+  <!-- HERO -->
+  <section id="home" class="relative w-full overflow-hidden">
+    <div class="absolute inset-0 kenburns">
+      <img data-bind="hero-img" src="https://images.unsplash.com/photo-1519741497674-611481863552?w=2000&q=80"
+        class="w-full h-full object-cover" alt="wedding couple">
+    </div>
+    <div class="absolute inset-0 bg-black/30"></div>
+    <div class="relative z-10 h-full flex flex-col items-center justify-center text-white text-center px-6">
+      <p data-bind="hero-subtitle" class="tracking-[0.4em] text-xs md:text-sm uppercase mb-4 md:mb-6 opacity-90 reveal">The
+        Wedding of</p>
+      <h1 data-bind="name1" class="display text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-light leading-none mb-2 md:mb-4 reveal">Olivia
+      </h1>
+      <p class="italic-display text-xl sm:text-2xl md:text-3xl mb-2 md:mb-4 reveal">&amp;</p>
+      <h1 data-bind="name2" class="display text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-light leading-none mb-6 md:mb-10 reveal">Ben
+      </h1>
+      <div class="ornament tracking-[0.35em] text-xs md:text-sm reveal"><span data-bind="hero-date-loc">September 14,
+          2025 &nbsp;·&nbsp; Tuscany, Italy</span>
+      </div>
+      <a href="#rsvp" class="btn-light mt-8 md:mt-12 reveal">RSVP</a>
+    </div>
+  </section>
+
+  <!-- INTRO / SAVE THE DATE -->
+  <section id="save-the-date" class="py-28 md:py-40 px-6 text-center">
+    <div class="max-w-2xl mx-auto">
+      <p class="section-label mb-6 reveal">Save The Date</p>
+      <h2 data-bind="std-heading" class="display text-4xl md:text-5xl font-light leading-tight mb-8 reveal">We're
+        getting married</h2>
+      <div class="ornament mb-10 reveal"></div>
+      <p data-bind="std-quote" class="serif text-xl md:text-2xl leading-relaxed text-muted italic-display reveal">
+        "Two souls with but a single thought, two hearts that beat as one." We can't wait to celebrate our love with the
+        people who mean the most to us.
+      </p>
+    </div>
+  </section>
+
+  <!-- INVITATION CARD SECTION -->
+  <section id="invitation-card" class="py-24 bg-cream overflow-hidden">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="mb-16">
+        <p class="section-label mb-4 reveal">The Invitation</p>
+        <h2 class="display text-4xl md:text-5xl font-light mb-6 reveal">Wedding Invite</h2>
+        <div class="ornament reveal"></div>
+      </div>
+      <div class="reveal relative inline-block group">
+        <div
+          class="absolute -inset-4 bg-accent/10 rounded-xl blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+        </div>
+        <img data-bind="inv-img" src=""
+          class="relative max-w-full h-auto shadow-2xl rounded-sm border-[12px] border-white"
+          alt="Wedding Invitation Card">
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN -->
+  <section id="countdown-section" class="relative py-28 md:py-36 px-6 bg-sand/40">
+    <div class="max-w-5xl mx-auto text-center">
+      <p class="section-label mb-4 reveal">Counting Down</p>
+      <h2 data-bind="cd-heading" class="display text-3xl md:text-4xl font-light mb-14 reveal">Until we say "I do"</h2>
+      <div id="countdown" class="grid grid-cols-4 gap-4 md:gap-12 reveal">
+        <div>
+          <div class="countdown-num text-5xl md:text-7xl" id="cd-days">00</div>
+          <div class="section-label mt-3">Days</div>
+        </div>
+        <div>
+          <div class="countdown-num text-5xl md:text-7xl" id="cd-hours">00</div>
+          <div class="section-label mt-3">Hours</div>
+        </div>
+        <div>
+          <div class="countdown-num text-5xl md:text-7xl" id="cd-mins">00</div>
+          <div class="section-label mt-3">Minutes</div>
+        </div>
+        <div>
+          <div class="countdown-num text-5xl md:text-7xl" id="cd-secs">00</div>
+          <div class="section-label mt-3">Seconds</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR STORY -->
+  <section id="story" class="py-28 md:py-40 px-6">
+    <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-14 md:gap-24 items-center">
+      <div class="reveal">
+        <img data-bind="story-img" src="https://images.unsplash.com/photo-1525258946800-98cfd641d0de?w=1200&q=80"
+          class="w-full h-[520px] object-cover" alt="couple">
+      </div>
+      <div class="reveal">
+        <p class="section-label mb-4">Our Story</p>
+        <h2 data-bind="story-heading" class="display text-4xl md:text-5xl font-light leading-tight mb-8">How we met</h2>
+        <div class="w-12 h-px bg-accent mb-8"></div>
+        <p data-bind="story-p1" class="serif text-lg md:text-xl leading-relaxed text-muted mb-6">
+          It all began on a warm summer evening in a small café in Florence. A spilled coffee, a shared laugh, and an
+          unexpected conversation that lasted until the stars came out.
+        </p>
+        <p data-bind="story-p2" class="serif text-lg md:text-xl leading-relaxed text-muted mb-10">
+          Seven years, countless adventures, and one unforgettable proposal later, we're ready to begin the next chapter
+          — surrounded by the love of our family and friends.
+        </p>
+        <a href="#details" class="btn-outline inline-block">Our Journey</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DETAILS / EVENTS -->
+  <section id="details" class="py-28 md:py-40 px-6 bg-sand/40">
+    <div class="max-w-6xl mx-auto text-center">
+      <p class="section-label mb-4 reveal">The Celebration</p>
+      <h2 class="display text-4xl md:text-5xl font-light mb-6 reveal">Event Details</h2>
+      <div class="ornament mb-20 reveal"></div>
+
+      <div class="grid md:grid-cols-3 gap-10 md:gap-8">
+        <div class="reveal">
+          <div class="mb-6 flex justify-center">
+            <svg width="44" height="44" fill="none" stroke="#8a7a5c" stroke-width="1" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+          </div>
+          <h3 class="display text-2xl mb-3">Ceremony</h3>
+          <div class="w-8 h-px bg-accent mx-auto mb-5"></div>
+          <p data-bind="ev-cer" class="serif text-lg text-muted leading-relaxed">
+            4:00 PM<br />
+            Villa San Crispolto<br />
+            Tuscany, Italy
+          </p>
+        </div>
+        <div class="reveal">
+          <div class="mb-6 flex justify-center">
+            <svg width="44" height="44" fill="none" stroke="#8a7a5c" stroke-width="1" viewBox="0 0 24 24">
+              <path d="M5 3v18M19 3v18M5 8h14M5 16h14" />
+            </svg>
+          </div>
+          <h3 class="display text-2xl mb-3">Reception</h3>
+          <div class="w-8 h-px bg-accent mx-auto mb-5"></div>
+          <p data-bind="ev-rec" class="serif text-lg text-muted leading-relaxed">
+            6:30 PM<br />
+            The Garden Terrace<br />
+            Villa San Crispolto
+          </p>
+        </div>
+        <div class="reveal">
+          <div class="mb-6 flex justify-center">
+            <svg width="44" height="44" fill="none" stroke="#8a7a5c" stroke-width="1" viewBox="0 0 24 24">
+              <path d="M6 12c0 4 6 9 6 9s6-5 6-9a6 6 0 10-12 0z" />
+              <circle cx="12" cy="12" r="2" />
+            </svg>
+          </div>
+          <h3 class="display text-2xl mb-3">Location</h3>
+          <div class="w-8 h-px bg-accent mx-auto mb-5"></div>
+          <p data-bind="ev-loc" class="serif text-lg text-muted leading-relaxed">
+            Via del Colle 12<br />
+            Chianti, 53017<br />
+            Tuscany, Italy
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-20 reveal">
+        <a href="#rsvp" class="btn-outline inline-block">View Schedule</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- GALLERY -->
+  <section id="gallery" class="py-28 md:py-40 px-6">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-20">
+        <p class="section-label mb-4 reveal">Memories</p>
+        <h2 class="display text-4xl md:text-5xl font-light mb-6 reveal">Our Gallery</h2>
+        <div class="ornament reveal"></div>
+      </div>
+      <div data-bind="gallery-grid" class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+        <img class="reveal w-full h-64 md:h-80 object-cover"
+          src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?w=800&q=80" alt="">
+        <img class="reveal w-full h-64 md:h-80 object-cover md:row-span-2 md:h-full"
+          src="https://images.unsplash.com/photo-1606800052052-a08af7148866?w=800&q=80" alt="">
+        <img class="reveal w-full h-64 md:h-80 object-cover"
+          src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=800&q=80" alt="">
+        <img class="reveal w-full h-64 md:h-80 object-cover"
+          src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=800&q=80" alt="">
+        <img class="reveal w-full h-64 md:h-80 object-cover"
+          src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?w=800&q=80" alt="">
+        <img class="reveal w-full h-64 md:h-80 object-cover"
+          src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?w=800&q=80" alt="">
+      </div>
+    </div>
+  </section>
+
+  <!-- QUOTE -->
+  <section id="quote-section" class="relative py-28 md:py-36 px-6 text-center">
+    <div class="max-w-3xl mx-auto reveal">
+      <svg class="mx-auto mb-8" width="38" height="38" fill="#8a7a5c" viewBox="0 0 24 24">
+        <path
+          d="M9 7H5a2 2 0 00-2 2v4a2 2 0 002 2h2v2a2 2 0 01-2 2H4v2h1a4 4 0 004-4V7zm10 0h-4a2 2 0 00-2 2v4a2 2 0 002 2h2v2a2 2 0 01-2 2h-1v2h1a4 4 0 004-4V7z" />
+      </svg>
+      <p data-bind="quote-text" class="italic-display text-2xl md:text-4xl leading-relaxed text-ink font-light">
+        "To love and be loved is to feel the sun from both sides."
+      </p>
+      <p data-bind="quote-author" class="section-label mt-8">— David Viscott</p>
+    </div>
+  </section>
+
+  <!-- RSVP -->
+  <section id="rsvp" class="relative py-28 md:py-40 px-6 bg-cover bg-center"
+    style="background-image: linear-gradient(rgba(20,18,15,0.55), rgba(20,18,15,0.55)), url('https://images.unsplash.com/photo-1519741497674-611481863552?w=2000&q=80');">
+    <div class="max-w-2xl mx-auto text-center text-white">
+      <p class="tracking-[0.35em] text-xs uppercase mb-5 reveal">Join Us</p>
+      <h2 data-bind="rsvp-heading" class="display text-4xl md:text-5xl font-light mb-6 reveal">Kindly RSVP</h2>
+      <p data-bind="rsvp-deadline" class="serif text-lg md:text-xl mb-10 opacity-90 reveal">Please reply by August 1st,
+        2025</p>
+
+      <form class="grid gap-5 text-left reveal">
+        <input type="text" id="rsvp-name" placeholder="Your Name"
+          class="bg-transparent border-b border-white/50 py-3 placeholder-white/70 focus:outline-none focus:border-white text-white text-sm tracking-wider" />
+        <select id="rsvp-attendance"
+          class="bg-transparent border-b border-white/50 py-3 text-white/80 text-sm tracking-wider focus:outline-none focus:border-white">
+          <option class="text-ink">Will you be attending?</option>
+          <option class="text-ink">Joyfully Accepts</option>
+          <option class="text-ink">Regretfully Declines</option>
+        </select>
+        <textarea id="rsvp-message" rows="3" placeholder="A message for the couple"
+          class="bg-transparent border-b border-white/50 py-3 placeholder-white/70 focus:outline-none focus:border-white text-white text-sm tracking-wider resize-none"></textarea>
+        <button type="button" onclick="sendWhatsAppRSVP()" class="btn-light mt-6 mx-auto">Send Response</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="py-16 px-6 text-center bg-cream">
+    <div class="max-w-3xl mx-auto">
+      <h3 data-bind="footer-names" class="display text-3xl font-light mb-3">Olivia &amp; Ben</h3>
+      <p data-bind="footer-date" class="italic-display text-muted mb-6">14 . 09 . 2025</p>
+      <div class="ornament mb-8"></div>
+      <div class="flex justify-center gap-6 mb-8 text-muted">
+        <a href="#" class="hover:text-ink"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 2.2c3.2 0 3.6 0 4.8.1 1.2.1 1.8.2 2.2.4.6.2 1 .5 1.4.9.4.4.7.8.9 1.4.2.4.4 1 .4 2.2.1 1.2.1 1.6.1 4.8s0 3.6-.1 4.8c-.1 1.2-.2 1.8-.4 2.2-.2.6-.5 1-.9 1.4-.4.4-.8.7-1.4.9-.4.2-1 .4-2.2.4-1.2.1-1.6.1-4.8.1s-3.6 0-4.8-.1c-1.2-.1-1.8-.2-2.2-.4-.6-.2-1-.5-1.4-.9-.4-.4-.7-.8-.9-1.4-.2-.4-.4-1-.4-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.1-4.8c.1-1.2.2-1.8.4-2.2.2-.6.5-1 .9-1.4.4-.4.8-.7 1.4-.9.4-.2 1-.4 2.2-.4C8.4 2.2 8.8 2.2 12 2.2zm0 3.3c-3.6 0-6.5 2.9-6.5 6.5s2.9 6.5 6.5 6.5 6.5-2.9 6.5-6.5S15.6 5.5 12 5.5zm0 10.7a4.2 4.2 0 110-8.4 4.2 4.2 0 010 8.4zm6.8-10.9a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+          </svg></a>
+        <a href="#" class="hover:text-ink"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M22 5.8c-.7.3-1.5.6-2.3.7.8-.5 1.5-1.3 1.8-2.2-.8.5-1.7.8-2.6 1-.8-.8-1.9-1.3-3.1-1.3-2.4 0-4.3 1.9-4.3 4.3 0 .3 0 .7.1 1-3.6-.2-6.7-1.9-8.8-4.5-.4.6-.6 1.4-.6 2.2 0 1.5.8 2.8 1.9 3.6-.7 0-1.4-.2-2-.5 0 2.1 1.5 3.8 3.5 4.2-.4.1-.8.2-1.2.2-.3 0-.6 0-.8-.1.6 1.7 2.2 3 4.1 3-1.5 1.2-3.4 1.9-5.5 1.9H2c2 1.3 4.3 2 6.8 2 8.1 0 12.6-6.7 12.6-12.6v-.6c.9-.6 1.6-1.4 2.2-2.3z" />
+          </svg></a>
+        <a href="#" class="hover:text-ink"><svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M12 2a10 10 0 100 20 10 10 0 000-20zm4.5 7h-1.8c-.2 0-.5.3-.5.7V11h2.3l-.3 2.3h-2v6.2h-2.4v-6.2H9.7V11h2.1V9.3c0-1.7 1-2.6 2.5-2.6h2.2V9z" />
+          </svg></a>
+      </div>
+      <p data-bind="footer-tagline" class="text-xs tracking-[0.25em] uppercase text-muted">With love, forever &amp;
+        always</p>
+    </div>
+  </footer>
+
+  <script>
+    (async function () {
+    let D;
+    try {
+      const _r = await fetch('/get-content');
+      if (_r.ok) D = await _r.json();
+    } catch (e) {}
+    if (!D) D = loadWeddingData();
+    window.__WD = D;
+
+    // Apply data to page
+    function applyData() {
+      const $ = (s) => document.querySelector(s);
+      const $$ = (s) => document.querySelectorAll(s);
+
+      // Couple names & hero
+      $('[data-bind="hero-subtitle"]').textContent = D.hero.subtitle;
+      $('[data-bind="name1"]').textContent = D.couple.name1;
+      $('[data-bind="name2"]').textContent = D.couple.name2;
+      $('[data-bind="hero-date-loc"]').textContent = D.hero.date + ' \u00A0·\u00A0 ' + D.hero.location;
+      $('[data-bind="hero-img"]').src = D.hero.image;
+
+      // Save the date
+      $('[data-bind="std-heading"]').textContent = D.saveTheDate.heading;
+      $('[data-bind="std-quote"]').textContent = D.saveTheDate.quote;
+
+      // Invitation Card
+      $('[data-bind="inv-img"]').src = D.invitationCard.image;
+
+      // Countdown
+      $('[data-bind="cd-heading"]').innerHTML = D.countdown.heading;
+
+      // Story
+      $('[data-bind="story-heading"]').textContent = D.story.heading;
+      $('[data-bind="story-p1"]').textContent = D.story.paragraph1;
+      $('[data-bind="story-p2"]').textContent = D.story.paragraph2;
+      $('[data-bind="story-img"]').src = D.story.image;
+
+      // Events
+      $('[data-bind="ev-cer"]').innerHTML = D.events.ceremony.time + '<br/>' + D.events.ceremony.venue + '<br/>' + D.events.ceremony.location;
+      $('[data-bind="ev-rec"]').innerHTML = D.events.reception.time + '<br/>' + D.events.reception.venue + '<br/>' + D.events.reception.location;
+      $('[data-bind="ev-loc"]').innerHTML = D.events.mapLocation.address + '<br/>' + D.events.mapLocation.city + '<br/>' + D.events.mapLocation.region;
+
+      // Gallery
+      const galleryContainer = $('[data-bind="gallery-grid"]');
+      if (galleryContainer) {
+        galleryContainer.innerHTML = D.gallery.images.map((url, i) =>
+          `<img class="reveal w-full h-64 md:h-80 object-cover${i === 1 ? ' md:row-span-2 md:h-full' : ''}" src="${url}" alt="Gallery photo ${i + 1}">`
+        ).join('');
+      }
+
+      // Quote
+      $('[data-bind="quote-text"]').textContent = D.quote.text;
+      $('[data-bind="quote-author"]').textContent = D.quote.author;
+
+      // RSVP
+      $('[data-bind="rsvp-heading"]').textContent = D.rsvp.heading;
+      $('[data-bind="rsvp-deadline"]').textContent = D.rsvp.deadline;
+
+      // Footer
+      $('[data-bind="footer-names"]').innerHTML = D.couple.name1 + ' &amp; ' + D.couple.name2;
+      $('[data-bind="footer-date"]').textContent = D.footer.date;
+      $('[data-bind="footer-tagline"]').textContent = D.footer.tagline;
+
+      // Section visibility
+      const sectionMap = {
+        hero: '#home', saveTheDate: '#save-the-date', countdown: '#countdown-section',
+        story: '#story', events: '#details', gallery: '#gallery',
+        quote: '#quote-section', rsvp: '#rsvp', invitationCard: '#invitation-card'
+      };
+      for (const [key, sel] of Object.entries(sectionMap)) {
+        const el = $(sel);
+        if (el) el.style.display = D.sections[key] ? '' : 'none';
+      }
+    }
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.12 });
+
+    function initReveal() {
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    }
+
+    // Countdown
+    function updateCD() {
+      const target = new Date(D.countdown.targetDate).getTime();
+      const now = Date.now();
+      let d = target - now;
+      if (d < 0) d = 0;
+      document.getElementById('cd-days').textContent = String(Math.floor(d / 86400000)).padStart(2, '0');
+      document.getElementById('cd-hours').textContent = String(Math.floor((d % 86400000) / 3600000)).padStart(2, '0');
+      document.getElementById('cd-mins').textContent = String(Math.floor((d % 3600000) / 60000)).padStart(2, '0');
+      document.getElementById('cd-secs').textContent = String(Math.floor((d % 60000) / 1000)).padStart(2, '0');
+    }
+
+    function sendWhatsAppRSVP() {
+      const name = document.getElementById('rsvp-name').value;
+      const attendance = document.getElementById('rsvp-attendance').value;
+      const message = document.getElementById('rsvp-message').value;
+
+      const phone = D.rsvp.whatsapp || "910000000000";
+      const text = `*RSVP Response*\n\n*Name:* ${name}\n*Attendance:* ${attendance}\n*Message:* ${message}`;
+      const encodedText = encodeURIComponent(text);
+
+      window.open(`https://wa.me/${phone}?text=${encodedText}`, '_blank');
+    }
+
+    applyData();
+    initReveal();
+    updateCD();
+    setInterval(updateCD, 1000);
+    })();
+  </script>
+
+  <!-- ===== Opening Animation Script ===== -->
+  <script>
+    (function () {
+      var overlay = document.getElementById('opening-overlay');
+      var sealWrap = document.getElementById('seal-wrap');
+      var sealSvg = document.getElementById('seal-svg');
+      var tapHint = document.getElementById('tap-hint');
+      var flash = document.getElementById('flash-layer');
+      var cL = document.getElementById('curtain-left');
+      var cR = document.getElementById('curtain-right');
+      var glow = document.getElementById('warm-glow');
+      var dust = document.getElementById('dust-field');
+
+      // Pull names from data.js if available
+      try {
+        var D = window.__WD || loadWeddingData();
+        if (D) {
+          var n1 = document.getElementById('nl-1');
+          var n3 = document.getElementById('nl-3');
+          var odate = document.getElementById('ov-date');
+          var oloc = document.getElementById('ov-loc');
+          if (n1) n1.textContent = D.couple.name1;
+          if (n3) n3.textContent = D.couple.name2;
+          if (odate) odate.textContent = D.hero.date;
+          if (oloc) oloc.textContent = D.hero.location.split(',')[0].trim();
+        }
+      } catch (e) { }
+
+      // Create dust particles
+      for (var i = 0; i < 55; i++) {
+        var p = document.createElement('div');
+        p.className = 'dust';
+        var s = 1 + Math.random() * 2.5;
+        var a = 0.08 + Math.random() * 0.22;
+        var r = 195 + (Math.random() * 50 | 0);
+        var g = 180 + (Math.random() * 40 | 0);
+        var b = 140 + (Math.random() * 45 | 0);
+        var dur = 14 + Math.random() * 20;
+        var del = -(Math.random() * dur);
+        var dx = -40 + Math.random() * 80;
+        var dy = -(30 + Math.random() * 50);
+        p.style.cssText =
+          'width:' + s + 'px;height:' + s + 'px;' +
+          'left:' + (Math.random() * 100) + '%;top:' + (10 + Math.random() * 80) + '%;' +
+          'background:rgba(' + r + ',' + g + ',' + b + ',' + a + ');' +
+          '--dx:' + dx + 'px;--dy:' + dy + 'px;--dur:' + dur + 's;--del:' + del + 's;';
+        dust.appendChild(p);
+      }
+
+      // Mouse parallax on dust
+      document.addEventListener('mousemove', function (e) {
+        var mx = (e.clientX / window.innerWidth - 0.5) * -8;
+        var my = (e.clientY / window.innerHeight - 0.5) * -8;
+        dust.style.transform = 'translate(' + mx + 'px,' + my + 'px)';
+      });
+
+      // Open sequence — opens the website directly
+      var opened = false;
+      function openInvitation() {
+        if (opened) return;
+        opened = true;
+        tapHint.classList.add('fade-out');
+        sealSvg.classList.add('dissolving');
+
+        setTimeout(function () { flash.classList.add('active'); }, 250);
+        setTimeout(function () { cL.classList.add('opening'); cR.classList.add('opening'); }, 500);
+
+        // Reveal the main website right after the curtains part
+        setTimeout(function () {
+          overlay.classList.add('dismissed');
+          document.body.style.overflow = '';
+        }, 950);
+
+        setTimeout(function () {
+          if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+        }, 2350);
+      }
+
+      sealWrap.addEventListener('click', openInvitation);
+      sealWrap.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openInvitation(); }
+      });
+
+      document.body.style.overflow = 'hidden';
+    })();
+  </script>
+
+</body>
+
+</html>
