@@ -3,5 +3,11 @@
   "env": {
     "ADMIN_USER": "@ADMIN_USER",
     "ADMIN_PASS": "@ADMIN_PASS"
+  },
+  "functions": {
+    "api/**/*.js": {
+      "memory": 1024,
+      "maxDuration": 30
+    }
   }
 }

@@ -7,6 +7,10 @@ const SESSIONS = new Map();
 const ADMIN_USER = process.env.ADMIN_USER || 'admin';
 const ADMIN_PASS = process.env.ADMIN_PASS || 'admin123';
 
+if (!process.env.ADMIN_PASS) {
+  console.warn('[SECURITY] Using default admin password. Set ADMIN_PASS env var!');
+}
+
 function hashPass(p) {
   return crypto.scryptSync(p, SALT, 64).toString('hex');
 }
