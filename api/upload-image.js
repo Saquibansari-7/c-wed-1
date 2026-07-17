@@ -1,21 +1,11 @@
 const { isAuthed } = require('../lib/auth');
-const { uploadImage } = require('../lib/storage');
-const { IncomingForm } = require('formidable');
+const { ALLOWED_MIME } = require('../lib/storage');
 
 export const config = {
   api: {
     bodyParser: false,
   },
 };
-
-const ALLOWED_MIME = new Set([
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-  'image/webp',
-  'image/avif',
-  'image/svg+xml'
-]);
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -27,22 +17,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    const form = new IncomingForm();
-    const [fields, files] = await form.parse(req);
-
-    const imageFiles = files.image || [];
-    if (imageFiles.length === 0) {
-      return res.status(400).json({ error: 'No image file provided.' });
-    }
-
-    const file = imageFiles[0];
-
-    if (!ALLOWED_MIME.has(file.mimetype)) {
-      return res.status(400).json({ error: 'Only image files are allowed.' });
-    }
-
-    const url = await uploadImage(file);
-    res.status(200).json({ ok: true, url });
+    return res.status(501).json({ 
+      error: 'Image uploads require external storage setup (Cloudinary, AWS S3, or Vercel Blob). See documentation for setup instructions.' 
+    });
   } catch (err) {
     console.error('Upload error:', err);
     res.status(500).json({ error: err.message || 'Upload failed' });

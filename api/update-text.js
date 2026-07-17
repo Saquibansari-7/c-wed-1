@@ -26,6 +26,7 @@ export default function handler(req, res) {
     saveContent(data);
     res.status(200).json({ ok: true });
   } catch (e) {
+    console.error('Save error:', e);
     res.status(500).json({ error: e.message });
   }
 }
